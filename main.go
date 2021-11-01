@@ -93,5 +93,5 @@ func main() {
 	r.StaticFile("styles.css", "./templates/styles.css")
 
 	r.GET("/cekoissa", home_template)
-	r.Run()
+	r.Run(":4277")
 }
