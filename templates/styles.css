@@ -1,6 +1,7 @@
 #outer {
     background: #3e3e3e; 
-    position:relative
+    position:relative;
+    border-radius: 30px;
 }
 
 #top {
@@ -12,6 +13,7 @@
     position: absolute; 
 	background: #10e722; 
 	text-align: center;
+    border-radius: 30px;
 }
 
 #toperror {
@@ -19,10 +21,11 @@
 	right: 10px; 
     top: 0px; 
     width: auto; 
-    height: 100px; 
+    height: 85px; 
     position: absolute; 
 	background: #e71010; 
 	text-align: center;
+    border-radius: 30px;
 }
 
 #imagediv {
@@ -33,6 +36,7 @@
     position: absolute; 
 	background: #000000; 
     text-align: center;
+    border-radius: 30px;
 }
 
 #responsediv {
@@ -43,6 +47,7 @@
     position: absolute; 
 	background: #0000009a; 
     text-align: center;
+    border-radius: 30px;
 }
 
 #image {
@@ -59,4 +64,6 @@
 #button {
 	font-size: 30px;
 	border: none;
+    border-radius: 10px;
+    padding: 20px;
 }
