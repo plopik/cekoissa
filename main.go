@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -21,26 +22,28 @@ var questionsMap = map[string]question{}
 var answers = []string{}
 
 func home_template(c *gin.Context) {
-	answer := c.DefaultQuery("answer", "c'est quoi ca ?")
+	answer := c.DefaultQuery("a", "c'est quoi ca ?")
+	qnumber, _ := strconv.Atoi(c.DefaultQuery("q", "0"))
 	if answer == "false" {
 		q := c.DefaultQuery("question", "bug")
 		c.HTML(http.StatusOK, "cekoissaError.html", gin.H{
 			"Image":    q,
 			"Response": questionsMap[q].response,
+			"Next":     "q=" + strconv.Itoa(qnumber+1),
 		})
 	} else {
 		header := "c'est quoi ca ?"
 		if answer == "true" {
 			header = "Vrai"
 		}
-		index := rand.Intn(len(questions))
-		q := questionsMap[questions[index]]
-		a := map[string]string{q.response: "answer=true"}
+		q := questionsMap[questions[qnumber]]
+		var a [][]string
+		a = append(a, []string{q.response, "a=true&q=" + strconv.Itoa(qnumber+1)})
 		for len(a) < 5 {
 			i := rand.Intn(len(answers))
 			fa := answers[i]
-			if a[fa] == "" {
-				a[answers[i]] = "answer=false&question=" + q.image
+			if !contains2(a, fa) {
+				a = append(a, []string{fa, "a=false&question=" + q.image + "&q=" + strconv.Itoa(qnumber)})
 			}
 		}
 		fmt.Println(q.image)
@@ -55,6 +58,15 @@ func home_template(c *gin.Context) {
 func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func contains2(s [][]string, e string) bool {
+	for _, a := range s {
+		if a[0] == e {
 			return true
 		}
 	}

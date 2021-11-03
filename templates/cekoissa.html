@@ -16,8 +16,8 @@
         {{range $key, $value := .Answers -}}
             <tr>
             <td>
-                <button onclick="window.location.href='cekoissa?{{$value}}';" id = "button">
-                    {{$key}}
+                <button onclick="window.location.href='cekoissa?{{index $value 1}}';" id = "button">
+                    {{index $value 0}}
                 </button>
             </td>
             </tr>
