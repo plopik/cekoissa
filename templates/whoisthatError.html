@@ -1,0 +1,31 @@
+<head>
+	<link rel="stylesheet" href="styles.css">
+  </head>
+  
+  <body id="outer">
+	  <div id="toperror">
+		  <h1>Faux</h1>
+	  </div>
+	  
+		<ul>
+			<div id="questiondiv">
+				{{.Question}}
+			</div>
+			<table id="responsediv">
+			<tbody>
+				<tr>
+				<td id="response">
+					{{.Response}}
+				</td>
+				</tr>
+				<tr>
+				<td>
+					<button onclick="window.location.href='cekoissa?{{.Next}}';" id="button">
+						j'avoue
+					</button>
+				</td>
+				</tr>
+			</tbody>
+			</table>
+		</ul>
+  </body>

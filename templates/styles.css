@@ -39,6 +39,18 @@
     border-radius: 30px;
 }
 
+#questiondiv {
+    left: 10px; 
+    top: 100px; 
+    width: 50%; 
+    height: 650px; 
+    position: absolute; 
+	background: #dfcdcd; 
+    text-align: center;
+    border: 100px;
+    border-radius: 30px;
+}
+
 #responsediv {
     right: 10px; 
     top: 100px; 
