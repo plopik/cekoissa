@@ -4,11 +4,12 @@
 
 <body id="outer">
     <div id="top">
-        <h1>{{.Header}}</h1>
+        {{.Header}}
     </div>
     
     <ul>
         <div id="questiondiv">
+            <br>
             {{.Question}}
         </div>
         <table id="responsediv">
@@ -16,7 +17,7 @@
         {{range $key, $value := .Answers -}}
             <tr>
             <td>
-                <button onclick="window.location.href='cekoissa?{{index $value 1}}';" id = "button">
+                <button onclick="window.location.href='{{index $value 1}}';" id = "button">
                     {{index $value 0}}
                 </button>
             </td>

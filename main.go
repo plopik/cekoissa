@@ -1,18 +1,15 @@
 package main
 
 import (
-	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 type question struct {
-	question string
+	words    string
 	image    string
 	response string
 }
@@ -28,119 +25,99 @@ var WITanswers = []string{}
 func home_template(c *gin.Context) {
 	c.HTML(http.StatusOK, "home.html", gin.H{})
 }
-func whoisthat_template(c *gin.Context) {
 
-	answer := c.DefaultQuery("a", "who is that")
+func error_words_template(c *gin.Context, subject string, qnumber int, q question) {
+	c.HTML(http.StatusOK, "words_error.html", gin.H{
+		"Question": q.words,
+		"Response": q.response,
+		"Next":     subject + "?q=" + strconv.Itoa(qnumber+1),
+	})
+}
+
+func words_template(c *gin.Context, subject string, qnumber int, q question) {
+	header := "who is that ?"
+	if qnumber == 0 {
+		header = "Vrai"
+	}
+	var a [][]string
+	a = append(a, []string{q.response, subject + "?a=true&q=" + strconv.Itoa(qnumber+1)})
+	for len(a) < 5 {
+		i := rand.Intn(len(WITanswers))
+		fa := WITanswers[i]
+		if !contains2(a, fa) {
+			a = append(a, []string{fa, subject + "?a=false&q=" + strconv.Itoa(qnumber)})
+		}
+	}
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+	c.HTML(http.StatusOK, "words_question.html", gin.H{
+		"Question": q.words,
+		"Header":   header,
+		"Answers":  a,
+	})
+
+}
+
+func error_image_template(c *gin.Context, subject string, qnumber int, q question) {
+	c.HTML(http.StatusOK, "image_error.html", gin.H{
+		"Image":    q.image,
+		"Response": q.response,
+		"Next":     subject + "?q=" + strconv.Itoa(qnumber+1),
+	})
+}
+
+func image_template(c *gin.Context, subject string, qnumber int, q question) {
+	header := "c'est quoi ca ?"
+	if qnumber == 0 {
+		header = "Vrai"
+	}
+	var a [][]string
+	a = append(a, []string{q.response, subject + "?a=true&q=" + strconv.Itoa(qnumber+1)})
+	for len(a) < 5 {
+		i := rand.Intn(len(CKSanswers))
+		fa := CKSanswers[i]
+		if !contains2(a, fa) {
+			a = append(a, []string{fa, subject + "?a=false&q=" + strconv.Itoa(qnumber)})
+		}
+	}
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+	c.HTML(http.StatusOK, "image_question.html", gin.H{
+		"Image":   q.image,
+		"Header":  header,
+		"Answers": a,
+	})
+}
+
+func question_template(c *gin.Context, subject string, qs []string, as []string) {
+	answer := c.Query("a")
 	qnumber, _ := strconv.Atoi(c.DefaultQuery("q", "0"))
-	if answer == "false" {
-		q := c.DefaultQuery("question", "bug")
-		c.HTML(http.StatusOK, "whoisthatError.html", gin.H{
-			"Question": q,
-			"Response": questionsMap[q].response,
-			"Next":     "q=" + strconv.Itoa(qnumber+1),
-		})
+	if qnumber >= len(qs) {
+		qnumber = 0
+	}
+	q := questionsMap[qs[qnumber]]
+	if answer == "false" && q.image != "" {
+		error_image_template(c, subject, qnumber, q)
+	} else if answer == "false" && q.image == "" {
+		error_words_template(c, subject, qnumber, q)
+	} else if q.image != "" {
+		image_template(c, subject, qnumber, q)
 	} else {
-		header := "who is that ?"
-		if answer == "true" {
-			header = "Vrai"
-		}
-		q := questionsMap[WITquestions[qnumber]]
-		var a [][]string
-		a = append(a, []string{q.response, "a=true&q=" + strconv.Itoa(qnumber+1)})
-		for len(a) < 5 {
-			i := rand.Intn(len(WITanswers))
-			fa := WITanswers[i]
-			if !contains2(a, fa) {
-				a = append(a, []string{fa, "a=false&question=" + q.image + "&q=" + strconv.Itoa(qnumber)})
-			}
-		}
-		c.HTML(http.StatusOK, "whoisthat.html", gin.H{
-			"Question": q.question,
-			"Header":   header,
-			"Answers":  a,
-		})
+		words_template(c, subject, qnumber, q)
 	}
 }
 
 func cekoissa_template(c *gin.Context) {
-	answer := c.DefaultQuery("a", "c'est quoi ca ?")
-	qnumber, _ := strconv.Atoi(c.DefaultQuery("q", "0"))
-	if answer == "false" {
-		q := c.DefaultQuery("question", "bug")
-		c.HTML(http.StatusOK, "cekoissaError.html", gin.H{
-			"Image":    q,
-			"Response": questionsMap[q].response,
-			"Next":     "q=" + strconv.Itoa(qnumber+1),
-		})
-	} else {
-		header := "c'est quoi ca ?"
-		if answer == "true" {
-			header = "Vrai"
-		}
-		q := questionsMap[CKSquestions[qnumber]]
-		var a [][]string
-		a = append(a, []string{q.response, "a=true&q=" + strconv.Itoa(qnumber+1)})
-		for len(a) < 5 {
-			i := rand.Intn(len(CKSanswers))
-			fa := CKSanswers[i]
-			if !contains2(a, fa) {
-				a = append(a, []string{fa, "a=false&question=" + q.image + "&q=" + strconv.Itoa(qnumber)})
-			}
-		}
-		c.HTML(http.StatusOK, "cekoissa.html", gin.H{
-			"Image":   q.image,
-			"Header":  header,
-			"Answers": a,
-		})
-	}
+	question_template(c, "cekoissa", CKSquestions, CKSanswers)
 }
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
-}
-
-func contains2(s [][]string, e string) bool {
-	for _, a := range s {
-		if a[0] == e {
-			return true
-		}
-	}
-	return false
+func whoisthat_template(c *gin.Context) {
+	question_template(c, "whoisthat", WITquestions, WITanswers)
 }
 
 func main() {
-	files, err := ioutil.ReadDir("data/radio_cerveau")
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	for _, file := range files {
-		name := file.Name()
-		if strings.HasSuffix(name, ".png") {
-			CKSquestions = append(CKSquestions, "radio_cerveau/"+name)
-		}
-	}
-
-	for _, q := range CKSquestions {
-		q2 := strings.Replace(q, ".png", "", -1)
-		q2 = strings.Trim(q2, "2")
-		q2 = strings.Trim(q2, "3")
-		la := strings.Split(q2, "/")
-		a := strings.Replace(la[len(la)-1], "_", " ", -1)
-		questionsMap[q] = question{"", q, a}
-		if !contains(CKSanswers, a) {
-			CKSanswers = append(CKSanswers, a)
-		}
-	}
-
-	WITquestions = append(WITquestions, "test")
-	questionsMap["test"] = question{"quel est le muscle ?", "", "c'est le con"}
-	WITanswers = CKSanswers
+	CKSquestions, CKSanswers = import_image("radio_cerveau", CKSquestions, CKSanswers)
+	WITquestions, WITanswers = import_image("neuro_anat", WITquestions, WITanswers)
+	WITquestions, WITanswers = import_csv("data/neuro_anat/nerfs_craniaux.csv", WITquestions, WITanswers)
 
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.html")

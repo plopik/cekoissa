@@ -14,6 +14,10 @@
 	background: #10e722; 
 	text-align: center;
     border-radius: 30px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #toperror {
@@ -26,6 +30,11 @@
 	background: #e71010; 
 	text-align: center;
     border-radius: 30px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
 
 #imagediv {
@@ -34,7 +43,7 @@
     width: 50%; 
     height: 650px; 
     position: absolute; 
-	background: #000000; 
+	background: #ffffff; 
     text-align: center;
     border-radius: 30px;
 }
@@ -45,10 +54,14 @@
     width: 50%; 
     height: 650px; 
     position: absolute; 
-	background: #dfcdcd; 
+	background: #ddd9cb; 
     text-align: center;
     border: 100px;
     border-radius: 30px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #responsediv {
