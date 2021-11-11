@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (s *serie) import_image(folder string) {
+func (s *serie) import_image(folder string, color string) {
 	files, err := ioutil.ReadDir("data/" + folder)
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +30,7 @@ func (s *serie) import_image(folder string) {
 		q2 = strings.Trim(q2, "3")
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
-		questionsMap[q] = question{"", q, a}
+		questionsMap[q] = question{"", q, a, color}
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)
 		}
@@ -47,7 +47,7 @@ func (s *serie) import_csv(file string) {
 		q := line[0]
 		a := line[1]
 
-		questionsMap[q] = question{sentence + " " + q + " ?", "", a}
+		questionsMap[q] = question{sentence + " " + q + " ?", "", a, ""}
 		s.qs = append(s.qs, q)
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)

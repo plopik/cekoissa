@@ -8,8 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 func error_words_template(c *gin.Context, s serie, qnumber int, q question) {
 	c.HTML(http.StatusOK, "words_error.html", gin.H{
 		"Question": q.words,
@@ -19,10 +17,8 @@ func error_words_template(c *gin.Context, s serie, qnumber int, q question) {
 }
 
 func words_template(c *gin.Context, s serie, qnumber int, q question) {
-	header := "who is that ?"
-	if qnumber == 0 {
-		header = "Vrai"
-	}
+	header := "A ton avis ?"
+
 	var a [][]string
 	a = append(a, []string{q.response, s.subject + "?a=true&q=" + strconv.Itoa(qnumber+1)})
 	for len(a) < 5 {
@@ -51,9 +47,7 @@ func error_image_template(c *gin.Context, s serie, qnumber int, q question) {
 
 func image_template(c *gin.Context, s serie, qnumber int, q question) {
 	header := "c'est quoi ca ?"
-	if qnumber == 0 {
-		header = "Vrai"
-	}
+
 	var a [][]string
 	a = append(a, []string{q.response, s.subject + "?a=true&q=" + strconv.Itoa(qnumber+1)})
 	for len(a) < 5 {
@@ -65,9 +59,10 @@ func image_template(c *gin.Context, s serie, qnumber int, q question) {
 	}
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 	c.HTML(http.StatusOK, "image_question.html", gin.H{
-		"Image":   q.image,
-		"Header":  header,
-		"Answers": a,
+		"Imagecolor": q.color,
+		"Image":      q.image,
+		"Header":     header,
+		"Answers":    a,
 	})
 }
 

@@ -43,7 +43,7 @@
     width: 50%; 
     height: 650px; 
     position: absolute; 
-	background: #ffffff; 
+	background: #000000; 
     text-align: center;
     border-radius: 30px;
 }
@@ -80,8 +80,7 @@
     right: 0px; 
     left: 0px;
     width: 100%;
-    position: absolute; 
-    background: #e019199a; 
+    position: absolute;
     text-align: center;
 }
 
