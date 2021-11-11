@@ -4,28 +4,26 @@
   
   <body id="outer">
 	  <div id="top">
-		  <h1>Tu veux jouer a quoi ?</h1>
+		  Tu veux jouer a quoi ?
 	  </div>
 	  
-	  <ul>
-		  <table id="responsediv">
+	<div id="homediv">
+		<ul>
+		  <table id="hometable">
 		  <tbody>
-			  <tr>
-			  <td>
-				  <button onclick="window.location.href='cekoissa';" id = "button">
-					  Cékoissa ?
-				  </button>
-			  </td>
-			  </tr>
-			  <tr>
-				<td>
-					<button onclick="window.location.href='whoisthat';" id = "button">
-						Who's that ?
-					</button>
-				</td>
-				</tr>
+			{{range $key, $value := .Series -}}
+            <tr>
+            <td>
+                <button onclick="window.location.href='{{index $value 0}}';" id = "button">
+                    {{index $value 1}}
+                </button>
+            </td>
+            </tr>
+        	{{end}}
 		  </tbody>
 		  </table>
 	  </ul>
+	</div>
+	  
   
   </body>

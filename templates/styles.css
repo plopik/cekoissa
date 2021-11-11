@@ -64,6 +64,27 @@
     justify-content: center;
 }
 
+#homediv {
+    right: 10px; 
+    left: 10px;
+    top: 100px;
+    width: auto;
+    height: 650px; 
+    position: absolute; 
+	background: #0000009a; 
+    text-align: center;
+    border-radius: 30px;
+}
+
+#hometable {
+    right: 0px; 
+    left: 0px;
+    width: 100%;
+    position: absolute; 
+    background: #e019199a; 
+    text-align: center;
+}
+
 #responsediv {
     right: 10px; 
     top: 100px; 

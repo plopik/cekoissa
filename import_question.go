@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func import_image(folder string, qs []string, as []string) ([]string, []string) {
+func (s *serie) import_image(folder string) {
 	files, err := ioutil.ReadDir("data/" + folder)
 	if err != nil {
 		log.Fatal(err)
@@ -18,27 +18,26 @@ func import_image(folder string, qs []string, as []string) ([]string, []string) 
 	for _, file := range files {
 		name := file.Name()
 		if strings.HasSuffix(name, ".png") {
-			qs = append(qs, folder+"/"+name)
+			s.qs = append(s.qs, folder+"/"+name)
 		}
 
 	}
-	rand.Shuffle(len(qs), func(i, j int) { qs[i], qs[j] = qs[j], qs[i] })
+	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 
-	for _, q := range qs {
+	for _, q := range s.qs {
 		q2 := strings.Replace(q, ".png", "", -1)
 		q2 = strings.Trim(q2, "2")
 		q2 = strings.Trim(q2, "3")
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
 		questionsMap[q] = question{"", q, a}
-		if !contains(as, a) {
-			as = append(as, a)
+		if !contains(s.as, a) {
+			s.as = append(s.as, a)
 		}
 	}
-	return qs, as
 }
 
-func import_csv(file string, qs, as []string) ([]string, []string) {
+func (s *serie) import_csv(file string) {
 	records := readCsvFile(file)
 	sentence := records[0][1]
 	for i, line := range records {
@@ -49,13 +48,12 @@ func import_csv(file string, qs, as []string) ([]string, []string) {
 		a := line[1]
 
 		questionsMap[q] = question{sentence + " " + q + " ?", "", a}
-		qs = append(qs, q)
-		if !contains(as, a) {
-			as = append(as, a)
+		s.qs = append(s.qs, q)
+		if !contains(s.as, a) {
+			s.as = append(s.as, a)
 		}
 	}
-	rand.Shuffle(len(qs), func(i, j int) { qs[i], qs[j] = qs[j], qs[i] })
-	return qs, as
+	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 }
 
 func contains(s []string, e string) bool {
