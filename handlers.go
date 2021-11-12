@@ -39,9 +39,10 @@ func words_template(c *gin.Context, s serie, qnumber int, q question) {
 
 func error_image_template(c *gin.Context, s serie, qnumber int, q question) {
 	c.HTML(http.StatusOK, "image_error.html", gin.H{
-		"Image":    q.image,
-		"Response": q.response,
-		"Next":     s.subject + "?q=" + strconv.Itoa(qnumber+1),
+		"Imagecolor": q.color,
+		"Image":      q.image,
+		"Response":   q.response,
+		"Next":       s.subject + "?q=" + strconv.Itoa(qnumber+1),
 	})
 }
 
