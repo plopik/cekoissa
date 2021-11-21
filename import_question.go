@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -17,8 +18,10 @@ func (s *serie) import_image(folder string, color string) {
 
 	for _, file := range files {
 		name := file.Name()
-		if strings.HasSuffix(name, ".png") {
+		if strings.HasSuffix(name, ".png") || strings.HasSuffix(name, ".jpg") || strings.HasSuffix(name, ".GIF") || strings.HasSuffix(name, ".gif") {
 			s.qs = append(s.qs, folder+"/"+name)
+		} else {
+			fmt.Println(folder, name)
 		}
 
 	}
@@ -26,8 +29,12 @@ func (s *serie) import_image(folder string, color string) {
 
 	for _, q := range s.qs {
 		q2 := strings.Replace(q, ".png", "", -1)
+		q2 = strings.Replace(q2, ".jpg", "", -1)
+		q2 = strings.Replace(q2, ".GIF", "", -1)
+		q2 = strings.Replace(q2, ".gif", "", -1)
 		q2 = strings.Trim(q2, "2")
 		q2 = strings.Trim(q2, "3")
+		q2 = strings.ToLower(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
 		questionsMap[q] = question{"", q, a, color}
