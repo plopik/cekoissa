@@ -35,6 +35,7 @@ func (s *serie) import_image(folder string, color string) {
 		q2 = strings.Trim(q2, "2")
 		q2 = strings.Trim(q2, "3")
 		q2 = strings.ToLower(q2)
+		q2 = strings.Title(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
 		questionsMap[q] = question{"", q, a, color}

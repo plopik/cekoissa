@@ -2,6 +2,7 @@
     background: #3e3e3e; 
     position:relative;
     border-radius: 30px;
+    font-family: Helvetica, sans-serif;
 }
 
 #top {
@@ -28,8 +29,19 @@
 	text-align: center;
     border-radius: 30px;
     font-size: 40px;
-    background:url('/home_icon.svg') #ffffff;
+    background:url('/home_icon.svg') #00aa00;
     background-size: contain;
+}
+#counter {
+    left: 10px;
+    width: 100px; 
+    height: 70px; 
+    position: absolute; 
+	text-align: center;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #toperror {
@@ -125,8 +137,19 @@
 	border: none;
     border-radius: 10px;
     padding: 20px;
+    background-color: #ffffff;
 }
-
 #button:hover {
     background-color: #cacaca;
+}
+
+#bluebutton {
+	font-size: 30px;
+	border: none;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #0000ff;
+}
+#bluebutton:hover {
+    background-color: #0000ca;
 }
