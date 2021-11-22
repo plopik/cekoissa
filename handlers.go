@@ -92,10 +92,20 @@ func image_template(c *gin.Context, s *serie, qnumber int, q question) {
 func question_template(c *gin.Context, s *serie) {
 	answer := c.Query("a")
 	qnumber, _ := strconv.Atoi(c.DefaultQuery("q", "0"))
+	qlast := qnumber - 1
 	if qnumber >= len(s.qs) {
 		qnumber = 0
 	}
+
 	q := questionsMap[s.qs[qnumber]]
+	qq := s.qs[qnumber]
+	ip, _ := c.RemoteIP()
+	if answer == "true" {
+		qq = s.qs[qlast]
+	}
+	if answer != "" {
+		fmt.Printf("LOG ip=%v s=%v q=%v a=%v\n", ip, s.subject, qq, answer)
+	}
 	if (answer == "false" || answer == "nil") && q.image != "" {
 		error_image_template(c, s, qnumber, q)
 	} else if (answer == "false" || answer == "nil") && q.image == "" {
