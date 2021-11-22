@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,6 +47,9 @@ func main() {
 	serieNerfs.import_csv("data/neuro_anat/nerfs_craniaux.csv")
 	serieParasite.import_image("parasite", "#000000")
 
+	rand.Seed(time.Now().UnixNano())
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.html")
 	r.StaticFS("/data", http.Dir("data"))
@@ -56,5 +62,7 @@ func main() {
 		ss := s
 		r.GET("/"+s.subject, func(c *gin.Context) { question_template(c, ss) })
 	}
+	fmt.Println("Ready")
 	r.Run(":4277")
+
 }

@@ -99,7 +99,7 @@ func question_template(c *gin.Context, s *serie) {
 
 	q := questionsMap[s.qs[qnumber]]
 	qq := s.qs[qnumber]
-	ip, _ := c.RemoteIP()
+	ip := c.ClientIP()
 	if answer == "true" {
 		qq = s.qs[qlast]
 	}

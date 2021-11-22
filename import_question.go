@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -20,8 +19,6 @@ func (s *serie) import_image(folder string, color string) {
 		name := file.Name()
 		if strings.HasSuffix(name, ".png") || strings.HasSuffix(name, ".jpg") || strings.HasSuffix(name, ".GIF") || strings.HasSuffix(name, ".gif") {
 			s.qs = append(s.qs, folder+"/"+name)
-		} else {
-			fmt.Println(folder, name)
 		}
 
 	}
