@@ -5,7 +5,9 @@
 <body id="outer">
     <div id="top">
         {{.Header}}
+        <button id="homebutton" onclick="window.location.href='/';"></button>
     </div>
+
     
     <ul>
         <div id="imagediv" style="background-color: {{.Imagecolor}}">
@@ -16,7 +18,7 @@
         {{range $key, $value := .Answers -}}
             <tr>
             <td>
-                <button onclick="window.location.href='{{index $value 1}}';" id = "button">
+                <button onclick="window.location.href='{{index $value 1}}';" id = "button" style="background-color: {{index $value 2}}">
                     {{index $value 0}}
                 </button>
             </td>

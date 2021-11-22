@@ -3,8 +3,9 @@
   </head>
   
   <body id="outer">
-	  <div id="toperror">
-		  Faux
+	  <div id="toperror" style="background-color: {{.Headercolor}}">
+		{{.Header}}
+		<button id="homebutton" onclick="window.location.href='/';"></button>
 	  </div>
 	  
 		<ul>
@@ -15,12 +16,19 @@
 			<table id="responsediv">
 			<tbody>
 				<tr>
-				<td id="response">
-					{{.Response}}
-				</td>
+				<td id="response"></td>
 				</tr>
 				<tr>
-				<td>
+				<td id="response">{{.Response}}</td>
+				</tr>
+				<tr>
+				<td id="response"></td>
+				</tr>
+				<tr>
+				<td id="response"></td>
+				</tr>
+				<tr>
+				<td id="response">
 					<button onclick="window.location.href='{{.Next}}';" id="button">
 						j'avoue
 					</button>

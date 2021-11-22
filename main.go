@@ -15,25 +15,25 @@ type question struct {
 
 type serie struct {
 	subject string
+	label   string
 	qs      []string
 	as      []string
 }
 
 var questionsMap = map[string]question{}
-var serieIRM = serie{subject: "irmcrane"}
-var serieCrane = serie{subject: "basecrane"}
-var serieNerfs = serie{subject: "nerfs"}
-var serieParasite = serie{subject: "parasite"}
+var serieIRM = serie{subject: "irmcrane", label: "IRM craniales"}
+var serieCrane = serie{subject: "basecrane", label: "Schéma de la base du crane"}
+var serieNerfs = serie{subject: "nerfs", label: "Nerfs craniaux"}
+var serieParasite = serie{subject: "parasite", label: "Parasites 1"}
+var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite}
 
 func home_template(c *gin.Context) {
-	series := [][]string{
-		{"irmcrane", "IRM craniales"},
-		{"basecrane", "Schema de la base du crane"},
-		{"nerfs", "Nerfs craniaux"},
-		{"parasite", "Parasites"},
+	ss := [][]string{}
+	for _, s := range series {
+		ss = append(ss, []string{s.subject, s.label})
 	}
 	c.HTML(http.StatusOK, "home.html", gin.H{
-		"Series": series,
+		"Series": ss,
 	})
 }
 
@@ -48,11 +48,13 @@ func main() {
 	r.LoadHTMLGlob("templates/*.html")
 	r.StaticFS("/data", http.Dir("data"))
 	r.StaticFile("styles.css", "./templates/styles.css")
+	r.StaticFile("home_icon.svg", "./templates/home_black_24dp.svg")
 
 	r.GET("/", home_template)
-	r.GET("/nerfs", func(c *gin.Context) { question_template(c, serieNerfs) })
-	r.GET("/irmcrane", func(c *gin.Context) { question_template(c, serieIRM) })
-	r.GET("/basecrane", func(c *gin.Context) { question_template(c, serieCrane) })
-	r.GET("/parasite", func(c *gin.Context) { question_template(c, serieParasite) })
+
+	for _, s := range series {
+		ss := s
+		r.GET("/"+s.subject, func(c *gin.Context) { question_template(c, ss) })
+	}
 	r.Run(":4277")
 }

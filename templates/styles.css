@@ -20,6 +20,18 @@
     justify-content: center;
 }
 
+#homebutton {
+    right: 10px;
+    width: 70px; 
+    height: 70px; 
+    position: absolute; 
+	text-align: center;
+    border-radius: 30px;
+    font-size: 40px;
+    background:url('/home_icon.svg') #ffffff;
+    background-size: contain;
+}
+
 #toperror {
     left: 10px;
 	right: 10px; 
@@ -40,7 +52,7 @@
 #imagediv {
     left: 10px; 
     top: 100px; 
-    width: 50%; 
+    width: 53%; 
     height: 650px; 
     position: absolute; 
 	background: #000000; 
@@ -51,7 +63,7 @@
 #questiondiv {
     left: 10px; 
     top: 100px; 
-    width: 50%; 
+    width: 53%; 
     height: 650px; 
     position: absolute; 
 	background: #ddd9cb; 
@@ -103,6 +115,7 @@
 }
 
 #response {
+    height: 20%;
 	font-size: 40px;
 	color: #ffffff;
 }
