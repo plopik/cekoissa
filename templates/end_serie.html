@@ -1,0 +1,33 @@
+<head>
+	<link rel="stylesheet" href="styles.css">
+  </head>
+  
+  <body id="outer">
+	  <div id="top">
+		  Allez la ! c'est fini
+		  <button id="homebutton" onclick="window.location.href='/';"></button>
+	  </div>
+	  
+	  <ul>
+		  <div id="imagediv">
+			  <img id = "image" src="end.gif" alt="{{.Image}}" >
+		  </div>
+			<table id="responsediv">
+		  <tbody>
+			  <tr><td id="response"></td></tr>
+
+			  <tr><td id="response">
+				<button onclick="window.location.href='/';" id="button">une autre série !</button>
+			  </td></tr>
+
+			  <tr><td id="response"></td></tr>
+
+			  <tr><td id="response">
+				  <button onclick="window.location.href='{{.Next}}';" id="button">la même !</button>
+			  </td></tr>
+
+			  <tr><td id="response"></td></tr>
+		  </tbody>
+		  </table>
+	  </ul>
+  </body>

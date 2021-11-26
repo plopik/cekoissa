@@ -55,6 +55,7 @@ func main() {
 	r.StaticFS("/data", http.Dir("data"))
 	r.StaticFile("styles.css", "./templates/styles.css")
 	r.StaticFile("home_icon.svg", "./templates/home_black_24dp.svg")
+	r.StaticFile("end.gif", "./templates/end.gif")
 
 	r.GET("/", home_template)
 
