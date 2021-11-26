@@ -26,14 +26,14 @@ func error_words_template(c *gin.Context, s *serie, qnumber int, q question) {
 	c.HTML(http.StatusOK, "words_error.html", gin.H{
 		"Header":      header,
 		"Headercolor": headerColor,
-		"Question":    q.words,
+		"Questions":   q.words,
 		"Response":    q.response,
 		"Next":        s.subject + "?q=" + strconv.Itoa(qnumber+1),
 	})
 }
 
 func words_template(c *gin.Context, s *serie, qnumber int, q question) {
-	header := "À ton avis ?"
+	header := "Qui correspond le mieux ?"
 
 	var a [][]string
 	a = append(a, []string{q.response, s.subject + "?a=true&q=" + strconv.Itoa(qnumber+1), "button"})
@@ -47,9 +47,10 @@ func words_template(c *gin.Context, s *serie, qnumber int, q question) {
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 	a = append(a, []string{"sais pas", s.subject + "?a=nil&q=" + strconv.Itoa(qnumber), "bluebutton"})
 	c.HTML(http.StatusOK, "words_question.html", gin.H{
-		"Question": q.words,
-		"Header":   header,
-		"Answers":  a,
+		"Counter":   fmt.Sprintf("%v/%v", qnumber+1, len(s.qs)),
+		"Questions": q.words,
+		"Header":    header,
+		"Answers":   a,
 	})
 
 }

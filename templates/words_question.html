@@ -5,22 +5,27 @@
 
 <body id="outer">
     <div id="top">
-        <div id="counter">{{.Counter}}</div>
         {{.Header}}
+        <div id="counter">{{.Counter}}</div>
         <button id="homebutton" onclick="window.location.href='/';"></button>
     </div>
     
     <ul>
         <div id="questiondiv">
+            <p>
             <br>
             {{.Question}}
+            {{range $key, $value := .Questions -}}
+                {{index $value 0}} : <b> {{index $value 1}} </b> <br><br>
+            {{end}}
+            </p>
         </div>
         <table id="responsediv">
         <tbody>
         {{range $key, $value := .Answers -}}
             <tr>
             <td>
-                <button onclick="window.location.href='{{index $value 1}}';" id = "button"  style="background-color: {{index $value 2}}">
+                <button onclick="window.location.href='{{index $value 1}}';" id = "{{index $value 2}}">
                     {{index $value 0}}
                 </button>
             </td>

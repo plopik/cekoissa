@@ -35,7 +35,7 @@ func (s *serie) import_image(folder string, color string) {
 		q2 = strings.Title(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
-		questionsMap[q] = question{"", q, a, color}
+		questionsMap[q] = question{nil, q, a, color}
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)
 		}
@@ -52,10 +52,38 @@ func (s *serie) import_csv(file string) {
 		q := line[0]
 		a := line[1]
 
-		questionsMap[q] = question{sentence + " " + q + " ?", "", a, ""}
+		questionsMap[q] = question{words: [][]string{{sentence, q}}, response: a}
 		s.qs = append(s.qs, q)
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)
+		}
+	}
+	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
+}
+
+func (s *serie) import_csv2(file string) {
+	records := readCsvFile(file)
+	sentences := records[0]
+	for i, line := range records {
+		if i == 0 {
+			continue
+		}
+		a := line[0]
+		q := [][]string{}
+		for j, carac := range line {
+			if j != 0 && carac != "" {
+				if len(carac) > 3 {
+					carac = strings.Title(carac)
+				}
+				q = append(q, []string{sentences[j], carac})
+			}
+		}
+		if len(q) > 1 {
+			questionsMap[a] = question{words: q, response: a}
+			s.qs = append(s.qs, a)
+			if !contains(s.as, a) {
+				s.as = append(s.as, a)
+			}
 		}
 	}
 	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })

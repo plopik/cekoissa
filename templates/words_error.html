@@ -10,8 +10,13 @@
 	  
 		<ul>
 			<div id="questiondiv">
+				<p>
 				<br>
 				{{.Question}}
+				{{range $key, $value := .Questions -}}
+					{{index $value 0}} : <b> {{index $value 1}} </b> <br><br>
+				{{end}}					
+				</p>
 			</div>
 			<table id="responsediv">
 			<tbody>
