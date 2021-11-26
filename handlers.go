@@ -9,6 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func end_template(c *gin.Context, s *serie) {
+	c.HTML(http.StatusOK, "end_serie.html", gin.H{
+		"Next": s.subject,
+	})
+}
+
 func error_words_template(c *gin.Context, s *serie, qnumber int, q question) {
 	answer := c.Query("a")
 	header := "Faux"
@@ -81,7 +87,7 @@ func image_template(c *gin.Context, s *serie, qnumber int, q question) {
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 	a = append(a, []string{"Sais pas", s.subject + "?a=nil&q=" + strconv.Itoa(qnumber), "bluebutton"})
 	c.HTML(http.StatusOK, "image_question.html", gin.H{
-		"Counter":    fmt.Sprintf("%v/%v", qnumber, len(s.qs)),
+		"Counter":    fmt.Sprintf("%v/%v", qnumber+1, len(s.qs)),
 		"Imagecolor": q.color,
 		"Image":      q.image,
 		"Header":     header,
@@ -93,8 +99,10 @@ func question_template(c *gin.Context, s *serie) {
 	answer := c.Query("a")
 	qnumber, _ := strconv.Atoi(c.DefaultQuery("q", "0"))
 	qlast := qnumber - 1
+	end := false
 	if qnumber >= len(s.qs) {
 		qnumber = 0
+		end = true
 	}
 
 	q := questionsMap[s.qs[qnumber]]
@@ -106,7 +114,9 @@ func question_template(c *gin.Context, s *serie) {
 	if answer != "" {
 		fmt.Printf("LOG ip=%v s=%v q=%v a=%v\n", ip, s.subject, qq, answer)
 	}
-	if (answer == "false" || answer == "nil") && q.image != "" {
+	if end {
+		end_template(c, s)
+	} else if (answer == "false" || answer == "nil") && q.image != "" {
 		error_image_template(c, s, qnumber, q)
 	} else if (answer == "false" || answer == "nil") && q.image == "" {
 		error_words_template(c, s, qnumber, q)
