@@ -49,7 +49,7 @@ func main() {
 	serieCrane.import_image("neuro_anat", "#ebebeb")
 	serieNerfs.import_csv("data/neuro_anat/nerfs_craniaux.csv")
 	serieParasite.import_image("parasite", "#000000")
-	serieBacterio.import_csv2("data/bactério.csv")
+	serieBacterio.import_csv2("data/bacterio.csv")
 
 	gin.SetMode(gin.ReleaseMode)
 
