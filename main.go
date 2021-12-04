@@ -28,7 +28,7 @@ var questionsMap = map[string]question{}
 var serieIRM = serie{subject: "irmcrane", label: "IRM craniales", date: "01/11"}
 var serieCrane = serie{subject: "basecrane", label: "Schéma de la base du crane", date: "01/11"}
 var serieNerfs = serie{subject: "nerfs", label: "Nerfs craniaux", date: "01/11"}
-var serieParasite = serie{subject: "parasite", label: "Parasitologie", date: "28/11"}
+var serieParasite = serie{subject: "parasite", label: "Parasitologie", date: "04/12"}
 var serieBacterio = serie{subject: "bacterio", label: "Bactériologie", date: "28/11"}
 var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite, &serieBacterio}
 
