@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,10 +25,18 @@ func error_words_template(c *gin.Context, s *serie, qnumber int, q question) {
 		header = "Réponse"
 		headerColor = "#0000ff"
 	}
+	qhtml := [][]template.HTML{}
+	for _, words := range q.words {
+		wordshtml := []template.HTML{}
+		for _, word := range words {
+			wordshtml = append(wordshtml, template.HTML(strings.ReplaceAll(word, "\n", "<br>")))
+		}
+		qhtml = append(qhtml, wordshtml)
+	}
 	c.HTML(http.StatusOK, "words_error.html", gin.H{
 		"Header":      header,
 		"Headercolor": headerColor,
-		"Questions":   q.words,
+		"Questions":   qhtml,
 		"Response":    q.response,
 		"Next":        s.subject + "?q=" + strconv.Itoa(qnumber+1),
 	})
@@ -46,9 +56,17 @@ func words_template(c *gin.Context, s *serie, qnumber int, q question) {
 	}
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
 	a = append(a, []string{"sais pas", s.subject + "?a=nil&q=" + strconv.Itoa(qnumber), "bluebutton"})
+	qhtml := [][]template.HTML{}
+	for _, words := range q.words {
+		wordshtml := []template.HTML{}
+		for _, word := range words {
+			wordshtml = append(wordshtml, template.HTML(strings.ReplaceAll(word, "\n", "<br>")))
+		}
+		qhtml = append(qhtml, wordshtml)
+	}
 	c.HTML(http.StatusOK, "words_question.html", gin.H{
 		"Counter":   fmt.Sprintf("%v/%v", qnumber+1, len(s.qs)),
-		"Questions": q.words,
+		"Questions": qhtml,
 		"Header":    header,
 		"Answers":   a,
 	})

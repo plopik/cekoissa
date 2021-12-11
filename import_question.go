@@ -2,11 +2,14 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
 	"strings"
+
+	"github.com/xuri/excelize/v2"
 )
 
 func (s *serie) import_image(folder string, color string) {
@@ -40,6 +43,46 @@ func (s *serie) import_image(folder string, color string) {
 			s.as = append(s.as, a)
 		}
 	}
+}
+
+func (s *serie) import_xlsx(file string) {
+
+	f, err := excelize.OpenFile(file)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Get all the rows in the Sheet1.
+	rows, err := f.GetRows("Sheet 1")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	sentences := rows[0]
+	fmt.Println(sentences)
+	for i, row := range rows {
+		if i == 0 {
+			continue
+		}
+		a := row[0]
+		q := [][]string{}
+		for j, carac := range row {
+			if j != 0 && carac != "" {
+				carac = strings.ReplaceAll(carac, " | ", "\n")
+				q = append(q, []string{sentences[j], carac})
+			}
+		}
+		if len(q) > 1 {
+			questionsMap[a] = question{words: q, response: a}
+			s.qs = append(s.qs, a)
+			if !contains(s.as, a) {
+				s.as = append(s.as, a)
+			}
+		}
+	}
+
+	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 }
 
 func (s *serie) import_csv(file string) {
