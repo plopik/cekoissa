@@ -59,6 +59,7 @@ func main() {
 	r.StaticFile("styles.css", "./templates/styles.css")
 	r.StaticFile("home_icon.svg", "./templates/home_black_24dp.svg")
 	r.StaticFile("end.gif", "./templates/end.gif")
+	r.StaticFile("end2.mp4", "./templates/end2.mp4")
 
 	r.GET("/", home_template)
 
