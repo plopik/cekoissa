@@ -12,6 +12,8 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+var extension = []string{"png", "jpg", "jpeg", "gif"}
+
 func (s *serie) import_image(folder string, color string) {
 	files, err := ioutil.ReadDir("data/" + folder)
 	if err != nil {
@@ -20,21 +22,21 @@ func (s *serie) import_image(folder string, color string) {
 
 	for _, file := range files {
 		name := file.Name()
-		if strings.HasSuffix(name, ".png") || strings.HasSuffix(name, ".jpg") || strings.HasSuffix(name, ".GIF") || strings.HasSuffix(name, ".gif") {
-			s.qs = append(s.qs, folder+"/"+name)
+		for _, ext := range extension {
+			if strings.HasSuffix(name, "."+ext) || strings.HasSuffix(name, "."+strings.ToUpper(ext)) {
+				s.qs = append(s.qs, folder+"/"+name)
+			}
 		}
-
 	}
 	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 
 	for _, q := range s.qs {
-		q2 := strings.Replace(q, ".png", "", -1)
-		q2 = strings.Replace(q2, ".jpg", "", -1)
-		q2 = strings.Replace(q2, ".GIF", "", -1)
-		q2 = strings.Replace(q2, ".gif", "", -1)
+		q2 := strings.ToLower(q)
+		for _, ext := range extension {
+			q2 = strings.Replace(q2, "."+ext, "", -1)
+		}
 		q2 = strings.Trim(q2, "2")
 		q2 = strings.Trim(q2, "3")
-		q2 = strings.ToLower(q2)
 		q2 = strings.Title(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)

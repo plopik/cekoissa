@@ -31,7 +31,8 @@ var serieNerfs = serie{subject: "nerfs", label: "Nerfs craniaux", date: "01/11"}
 var serieParasite = serie{subject: "parasite", label: "Parasitologie", date: "04/12"}
 var serieBacterio = serie{subject: "bacterio", label: "Bactériologie", date: "28/11"}
 var seriePharmaco = serie{subject: "pharmaco", label: "Pharmacologie", date: "11/12"}
-var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite, &serieBacterio, &seriePharmaco}
+var serieOphtalmo = serie{subject: "ophtalmo", label: "Ophtalmologie", date: "12/12"}
+var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite, &serieBacterio, &seriePharmaco, &serieOphtalmo}
 
 func home_template(c *gin.Context) {
 	ss := [][]string{}
@@ -48,6 +49,7 @@ func main() {
 
 	serieIRM.import_image("radio_cerveau", "#000000")
 	serieCrane.import_image("neuro_anat", "#ebebeb")
+	serieOphtalmo.import_image("ophtalmo", "#ebebeb")
 	serieNerfs.import_csv("data/neuro_anat/nerfs_craniaux.csv")
 	serieParasite.import_image("parasite", "#000000")
 	serieBacterio.import_csv2("data/bacterio.csv")
