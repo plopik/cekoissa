@@ -47,6 +47,17 @@ func words_template(c *gin.Context, s *serie, qnumber int, q question) {
 
 	var a [][]string
 	a = append(a, []string{q.response, s.subject + "?a=true&q=" + strconv.Itoa(qnumber+1), "button"})
+	if q.falseResponse != nil {
+		for j := 0; j < 2; j++ {
+			i := rand.Intn(len(q.falseResponse))
+			fa := q.falseResponse[i]
+			if !contains2(a, fa) {
+				a = append(a, []string{fa, s.subject + "?a=false&q=" + strconv.Itoa(qnumber), "button"})
+			}
+		}
+		fmt.Println(a)
+
+	}
 	for len(a) < 4 {
 		i := rand.Intn(len(s.as))
 		fa := s.as[i]

@@ -10,10 +10,11 @@ import (
 )
 
 type question struct {
-	words    [][]string
-	image    string
-	response string
-	color    string
+	words         [][]string
+	image         string
+	response      string
+	falseResponse []string
+	color         string
 }
 
 type serie struct {
@@ -32,7 +33,9 @@ var serieParasite = serie{subject: "parasite", label: "Parasitologie", date: "04
 var serieBacterio = serie{subject: "bacterio", label: "Bactériologie", date: "28/11"}
 var seriePharmaco = serie{subject: "pharmaco", label: "Pharmacologie", date: "11/12"}
 var serieOphtalmo = serie{subject: "ophtalmo", label: "Ophtalmologie", date: "12/12"}
-var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite, &serieBacterio, &seriePharmaco, &serieOphtalmo}
+var serieThalamus = serie{subject: "thalamus", label: "Thalamus", date: "26/12"}
+var serieImagerie = serie{subject: "imagerie", label: "Imagerie", date: "30/12"}
+var series = []*serie{&serieIRM, &serieCrane, &serieNerfs, &serieParasite, &serieBacterio, &seriePharmaco, &serieOphtalmo, &serieThalamus, &serieImagerie}
 
 func home_template(c *gin.Context) {
 	ss := [][]string{}
@@ -50,8 +53,11 @@ func main() {
 	serieIRM.import_image("radio_cerveau", "#000000")
 	serieCrane.import_image("neuro_anat", "#ebebeb")
 	serieOphtalmo.import_image("ophtalmo", "#ebebeb")
-	serieNerfs.import_csv("data/neuro_anat/nerfs_craniaux.csv")
 	serieParasite.import_image("parasite", "#000000")
+	serieThalamus.import_image("thalamus", "#ebebeb")
+	serieImagerie.import_image("imagerie", "#000000")
+
+	serieNerfs.import_csv("data/neuro_anat/nerfs_craniaux.csv")
 	serieBacterio.import_csv2("data/bacterio.csv")
 	seriePharmaco.import_xlsx("data/pharmaco.xlsx")
 

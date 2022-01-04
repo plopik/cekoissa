@@ -35,14 +35,29 @@ func (s *serie) import_image(folder string, color string) {
 		for _, ext := range extension {
 			q2 = strings.Replace(q2, "."+ext, "", -1)
 		}
-		q2 = strings.Trim(q2, "2")
-		q2 = strings.Trim(q2, "3")
+		q2 = strings.Trim(q2, "0123456789")
 		q2 = strings.Title(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
-		questionsMap[q] = question{nil, q, a, color}
+		a = strings.Trim(a, " ")
+		questionsMap[q] = question{nil, q, a, nil, color}
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)
+		}
+	}
+}
+
+func (s *serie) add_false_response() {
+	qw1List := map[string][]string{}
+	for _, qID := range s.qs {
+		q := questionsMap[qID]
+		qw1List[q.words[0][1]] = append(qw1List[q.words[0][1]], q.response)
+	}
+	for _, qID := range s.qs {
+		q := questionsMap[qID]
+		q.falseResponse = qw1List[q.words[0][1]]
+		if len(q.falseResponse) > 1 {
+			questionsMap[qID] = q
 		}
 	}
 }
@@ -83,7 +98,7 @@ func (s *serie) import_xlsx(file string) {
 			}
 		}
 	}
-
+	s.add_false_response()
 	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 }
 
