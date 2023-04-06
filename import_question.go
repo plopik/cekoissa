@@ -27,7 +27,7 @@ func (s *serie) import_image(folder string, color string) {
 				s.qs = append(s.qs, folder+"/"+name)
 			}
 		}
-	}
+	}  
 	rand.Shuffle(len(s.qs), func(i, j int) { s.qs[i], s.qs[j] = s.qs[j], s.qs[i] })
 
 	for _, q := range s.qs {
@@ -39,7 +39,8 @@ func (s *serie) import_image(folder string, color string) {
 		q2 = strings.Title(q2)
 		la := strings.Split(q2, "/")
 		a := strings.Replace(la[len(la)-1], "_", " ", -1)
-		a = strings.Trim(a, " ")
+		
+		
 		questionsMap[q] = question{nil, q, a, nil, color}
 		if !contains(s.as, a) {
 			s.as = append(s.as, a)
